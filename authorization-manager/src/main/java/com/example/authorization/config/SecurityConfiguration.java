@@ -22,7 +22,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.example.authorization.security.AccessDecisionManagerAuthorizationManagerAdapter;
+import com.example.authorization.security.CustomAuthorizationManager;
 
 /**
  * An example of explicitly configuring Spring Security with the defaults.
@@ -37,10 +37,8 @@ public class SecurityConfiguration {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		System.out.println("-----securityFilterChain----");
 		// @formatter:off
-		//http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated()).httpBasic(withDefaults()).formLogin(withDefaults()).rememberMe((remember) -> remember.rememberMeServices(this.rememberMeServices(this.userDetailsService())));
-		http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/my/authorized/endpoint").access(new AccessDecisionManagerAuthorizationManagerAdapter()));
-        
-        
+		http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/my/authorized/endpoint").access(new CustomAuthorizationManager()));
+
 		// @formatter:on
 		return http.build();
 	}
