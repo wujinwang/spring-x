@@ -13,8 +13,8 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.springboot.booking.entity.Authority;
-import com.springboot.booking.repository.RequestPathRepository;
+import com.example.authorization.entity.Authority;
+import com.example.authorization.repository.RequestPathRepository;
 
 /**
  * @Description 实现权限拦截
