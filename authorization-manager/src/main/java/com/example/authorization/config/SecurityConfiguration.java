@@ -20,6 +20,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -28,9 +29,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
-
-import com.example.authorization.security.CustomAuthorizationManager;
 
 /**
  * An example of explicitly configuring Spring Security with the defaults.
@@ -76,7 +74,9 @@ public class SecurityConfiguration {
 		//OK
 		//http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated()).httpBasic(withDefaults()).formLogin(withDefaults());
 		
-		http.authorizeHttpRequests().requestMatchers("/index").permitAll().and().authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index2").access(new CustomAuthorizationManager<RequestAuthorizationContext>())).httpBasic(withDefaults()).formLogin(withDefaults());
+		http.authorizeHttpRequests().requestMatchers("/index").permitAll().
+		and().authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index2").access(new AuthorityAuthorizationManager("")))
+		.httpBasic(withDefaults()).formLogin(withDefaults());
 		
 //		 http.csrf()
 //         .disable()
