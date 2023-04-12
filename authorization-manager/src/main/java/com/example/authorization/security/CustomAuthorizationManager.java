@@ -16,6 +16,9 @@ public class CustomAuthorizationManager<T> implements AuthorizationManager<Reque
 	public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext context) {
 		if (hasAuthentication(authentication.get())) {
 			System.out.println("----hasAuthentication----");
+			authentication.get().getAuthorities();
+
+			
 			return new AuthorizationDecision(true);
 		}
 		return new AuthorizationDecision(false);

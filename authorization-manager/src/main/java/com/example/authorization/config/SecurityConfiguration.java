@@ -16,13 +16,15 @@
 
 package com.example.authorization.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
+import java.util.Collection;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -74,9 +76,13 @@ public class SecurityConfiguration {
 		//OK
 		//http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated()).httpBasic(withDefaults()).formLogin(withDefaults());
 		
-		http.authorizeHttpRequests().requestMatchers("/index").permitAll().
-		and().authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index2").access(new AuthorityAuthorizationManager("")))
-		.httpBasic(withDefaults()).formLogin(withDefaults());
+//		http.authorizeHttpRequests().requestMatchers("/index").permitAll().
+//		and().authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index2").access(new AuthorityAuthorizationManager("")))
+//		.httpBasic(withDefaults()).formLogin(withDefaults());
+		
+		//Collection<? extends GrantedAuthority> authorities =SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		//http.authorizeHttpRequests().anyRequest().access(new AuthorityAuthorizationManager<>(authorities));
+
 		
 //		 http.csrf()
 //         .disable()
