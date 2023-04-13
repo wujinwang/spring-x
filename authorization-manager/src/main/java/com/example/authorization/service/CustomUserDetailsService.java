@@ -19,13 +19,13 @@ import com.example.authorization.entity.SecurityUser;
 import com.example.authorization.entity.User;
 import com.example.authorization.repository.UserRepository;
 
-public class CustomUserDetailService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 	private final Map<String, SecurityUser> userMap = new HashMap<>();
 
 	@Autowired
 	UserRepository userRepository;
 
-	public CustomUserDetailService(BCryptPasswordEncoder bCryptPasswordEncoder) {
+	public CustomUserDetailsService(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		userMap.put("user", createUser("user", bCryptPasswordEncoder.encode("userPass"), false, "USER"));
 		userMap.put("admin", createUser("admin", bCryptPasswordEncoder.encode("adminPass"), true, "ADMIN", "USER"));
 	}

@@ -21,13 +21,14 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
 	@Autowired
 	RequestPathRepository requestPathRepository;
 
-	@Override
+	// @Override
 	public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
 		String requestUrl = ((FilterInvocation) o).getRequestUrl();
 		// 获取请求地址
 		// String requestUrl = ((FilterInvocation) o).getFullRequestUrl();
 		URI uri = UriComponentsBuilder.fromUriString(requestUrl).replaceQuery(null).build(Collections.emptyMap());
-		// System.out.println("------------------uri.getPath-------------------" + uri.getPath());
+		// System.out.println("------------------uri.getPath-------------------" +
+		// uri.getPath());
 		// 查询具体某个接口的权限
 		String path = uri.getPath();
 		if ("/".equals(path)) {
@@ -53,7 +54,17 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
 
 	@Override
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
-		return null;
+		List<Authority> authorityList = requestPathRepository.findByPath("/index");
+		if (authorityList == null || authorityList.size() == 0) {
+			// 请求路径没有配置权限，表明该请求URL可以任意访问
+			return null;
+		}
+
+		String[] attributes = new String[authorityList.size()];
+		for (int i = 0; i < authorityList.size(); i++) {
+			attributes[i] = authorityList.get(i).getCode();
+		}
+		return SecurityConfig.createList(attributes);
 	}
 
 	@Override

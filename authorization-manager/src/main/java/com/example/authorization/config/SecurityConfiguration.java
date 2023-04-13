@@ -16,8 +16,11 @@
 
 package com.example.authorization.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -51,10 +54,10 @@ public class SecurityConfiguration {
 //		return new CustomUserDetailService(bCryptPasswordEncoder);
 //	}
 //
-//	@Bean
-//	public AuthorizationManager<Collection<ConfigAttribute>> authorizationManager() {
-//		return new CustomAuthorizationManager<Collection<ConfigAttribute>>();
-//	}
+	@Bean
+	public AuthorizationManager<RequestAuthorizationContext> authorizationManager() {
+		return new CustomAuthorizationManager<RequestAuthorizationContext>();
+	}
 
 //	@Bean
 //	@Role(ROLE_INFRASTRUCTURE)
@@ -69,10 +72,14 @@ public class SecurityConfiguration {
 		System.out.println("-----securityFilterChain----");
 		// @formatter:off
 		
-		http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index").access(new CustomAuthorizationManager<RequestAuthorizationContext>()));
+		//http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index").access(new CustomAuthorizationManager<RequestAuthorizationContext>()));
 
 		//OK
 		//http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated()).httpBasic(withDefaults()).formLogin(withDefaults());
+		
+		//http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index").access(new CustomAuthorizationManager<RequestAuthorizationContext>())).httpBasic(withDefaults()).formLogin(withDefaults());
+		
+		http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index").access(authorizationManager())).httpBasic(withDefaults()).formLogin(withDefaults());
 		
 //		http.authorizeHttpRequests().requestMatchers("/index").permitAll().
 //		and().authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index2").access(new AuthorityAuthorizationManager("")))
