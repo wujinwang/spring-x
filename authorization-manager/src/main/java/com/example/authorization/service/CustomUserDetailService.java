@@ -16,7 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.authorization.entity.Authority;
 import com.example.authorization.entity.SecurityUser;
-import com.springboot.booking.repository.UserRepository;
+import com.example.authorization.entity.User;
+import com.example.authorization.repository.UserRepository;
 
 public class CustomUserDetailService implements UserDetailsService {
 	private final Map<String, SecurityUser> userMap = new HashMap<>();
@@ -34,8 +35,8 @@ public class CustomUserDetailService implements UserDetailsService {
 		// return Optional.ofNullable(userMap.get(username)).orElseThrow(() -> new UsernameNotFoundException("User " + username + " does not exists"));
 		System.out.println("----usernameOrEmail0---" + username);
 		// Let people login with either username or email
-		User userPrincipal = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail).orElseThrow(() -> new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail));
-		List<Authority> authorityList = userRepository.findAuthorityByUserame(usernameOrEmail);
+		User userPrincipal = userRepository.findByUsernameOrEmail(username, username).orElseThrow(() -> new UsernameNotFoundException("User not found with username or email : " + username));
+		List<Authority> authorityList = userRepository.findAuthorityByUserame(username);
 		// UserPrincipal userPrincipal=new UserPrincipal(user.getId(), user.getName(),
 		// user.getUsername(), user.getEmail(), user.getPassword(), authorities);
 
