@@ -35,6 +35,10 @@ public class CustomAuthorizationManager<T> implements AuthorizationManager<Reque
 
 			// 查询具体某个接口的权限
 			String path = context.getRequest().getRequestURI();
+
+			String method = context.getRequest().getMethod();
+			System.out.println(path + "--|---" + method);
+
 			if ("/".equals(path)) {
 				System.out.println("-----");
 			}

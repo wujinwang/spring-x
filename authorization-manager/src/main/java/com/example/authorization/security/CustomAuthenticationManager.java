@@ -10,7 +10,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import com.example.authorization.service.CustomUserDetailsService;
 
@@ -31,8 +30,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 		if (!passwordEncoder().matches(authentication.getCredentials().toString(), userDetail.getPassword())) {
 			throw new BadCredentialsException("Wrong password");
 		}
-		return new UsernamePasswordAuthenticationToken(userDetail.getUsername(), userDetail.getPassword(),
-				userDetail.getAuthorities());
+		return new UsernamePasswordAuthenticationToken(userDetail.getUsername(), userDetail.getPassword(), userDetail.getAuthorities());
 	}
 
 }

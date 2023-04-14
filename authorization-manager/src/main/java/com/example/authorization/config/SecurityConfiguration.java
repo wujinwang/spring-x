@@ -20,7 +20,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.authorization.AuthorizationManager;
+import org.springframework.security.authorization.AuthorizationManagers;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -79,8 +81,21 @@ public class SecurityConfiguration {
 		
 		//http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index").access(new CustomAuthorizationManager<RequestAuthorizationContext>())).httpBasic(withDefaults()).formLogin(withDefaults());
 		
-		http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index").access(authorizationManager())).httpBasic(withDefaults()).formLogin(withDefaults());
+		//OK
+		//http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index").access(authorizationManager())).httpBasic(withDefaults()).formLogin(withDefaults());
 		
+		http.authorizeHttpRequests(authorize -> authorize                                  
+			.requestMatchers("/resources/**", "/signup", "/about","/index").permitAll()  
+			.requestMatchers("/index2").access(authorizationManager())  
+			//.requestMatchers("/index**").access(authorizationManager())  
+			//.requestMatchers("/admin/**").hasRole("ADMIN")                             
+			//.requestMatchers("/index**").access(new WebExpressionAuthorizationManager("hasRole('ADMIN') and hasRole('DBA')"))   
+			 .requestMatchers("/db/**").access(AuthorizationManagers.allOf(AuthorityAuthorizationManager.hasRole("ADMIN"), AuthorityAuthorizationManager.hasRole("DBA")))   
+			.anyRequest().denyAll()                                                
+		).httpBasic(withDefaults()).formLogin(withDefaults());
+		
+		
+		//.requestMatchers("/auth/register", "/auth/token", "/auth/validate").permitAll()
 //		http.authorizeHttpRequests().requestMatchers("/index").permitAll().
 //		and().authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index2").access(new AuthorityAuthorizationManager("")))
 //		.httpBasic(withDefaults()).formLogin(withDefaults());
