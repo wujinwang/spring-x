@@ -74,16 +74,6 @@ public class SecurityConfiguration {
 		System.out.println("-----securityFilterChain----");
 		// @formatter:off
 		
-		//http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index").access(new CustomAuthorizationManager<RequestAuthorizationContext>()));
-
-		//OK
-		//http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated()).httpBasic(withDefaults()).formLogin(withDefaults());
-		
-		//http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index").access(new CustomAuthorizationManager<RequestAuthorizationContext>())).httpBasic(withDefaults()).formLogin(withDefaults());
-		
-		//OK
-		//http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index").access(authorizationManager())).httpBasic(withDefaults()).formLogin(withDefaults());
-		
 		http.authorizeHttpRequests(authorize -> authorize                                  
 			.requestMatchers("/resources/**", "/signup", "/about","/index").permitAll()  
 			.requestMatchers("/index2").access(authorizationManager())  
@@ -93,25 +83,6 @@ public class SecurityConfiguration {
 			 .requestMatchers("/db/**").access(AuthorizationManagers.allOf(AuthorityAuthorizationManager.hasRole("ADMIN"), AuthorityAuthorizationManager.hasRole("DBA")))   
 			.anyRequest().denyAll()                                                
 		).httpBasic(withDefaults()).formLogin(withDefaults());
-		
-		
-		//.requestMatchers("/auth/register", "/auth/token", "/auth/validate").permitAll()
-//		http.authorizeHttpRequests().requestMatchers("/index").permitAll().
-//		and().authorizeHttpRequests((authorize) -> authorize.requestMatchers("/index2").access(new AuthorityAuthorizationManager("")))
-//		.httpBasic(withDefaults()).formLogin(withDefaults());
-		
-		//Collection<? extends GrantedAuthority> authorities =SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-		//http.authorizeHttpRequests().anyRequest().access(new AuthorityAuthorizationManager<>(authorities));
-
-		
-//		 http.csrf()
-//         .disable()
-//         .authorizeHttpRequests()
-//         .anyRequest()
-//         .authenticated()
-//         .and()
-//         .sessionManagement()
-//         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		 
 		// @formatter:on
 		return http.build();
